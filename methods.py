@@ -37,5 +37,22 @@ def bisection(f, x_lo, x_hi, iterations):
 def cubic(x):
     return x*x*x
 
+# Performs netwon-raphson method for n iterations
+# Returns list of tuples of the form
+# (iteration, root_approx, f(root_approx), approximate_relative_error)
+def newton_raphson(f, f_derivative, x_guess, iterations):
+    results = []
+    x_guess_old = float('inf')
+    for i in range(iterations):
+        # Get error and append to results list
+        error = get_relative_error_percent(x_guess_old, x_guess)
+        results.append((i + 1, x_guess, f(x_guess), error))
+
+        # Set variables for next iteration
+        x_guess_old = x_guess
+        x_guess -= f(x_guess) / f_derivative(x_guess)
+    return results
+
+
 if __name__ == '__main__':
     print(bisection(cubic, -1, 10, 10))
